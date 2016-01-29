@@ -6,8 +6,8 @@ class BankDetail
   field :processing_amount, type: Integer
   field :rate_type, type: String
   field :rate_sub_type, type: String
-  field :base_rate, type: Integer
-  field :rate, type: Integer
+  field :base_rate, type: Float
+  field :rate, type: Float
   field :rate_comment, type: String
   field :loan_min_vl, type: Integer
   field :loan_max_vl, type: Integer

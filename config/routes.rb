@@ -6,6 +6,8 @@ Rails.application.routes.draw do
   root 'users#new'
   resources :users
 
+post "/users/calculation" =>"users#calculation"
+
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'
 

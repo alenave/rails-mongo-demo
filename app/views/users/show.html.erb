@@ -1,7 +1,10 @@
 
 
 <%= javascript_tag do %>
-window.max = 2000;
+window.max_loan = <%= @max_loan %>;
+window.min_loan = <%= @min_loan %>;
+window.max_tenure = <%= @max_tenure %>;
+window.min_tenure = <%= @min_tenure %>;
 <% end %>
 
 <table width="90%" cellpadding="50" bgcolor="155d84">
@@ -23,7 +26,7 @@ window.max = 2000;
   </tr>
   <tr>
   <td bgcolor="#155d84" width="5%" style="text-align:left; vertical-align:top; padding-top:0; color:white ">
-  <%= @min %>
+  <%= @min_loan %>
   </td>
     <td style="text-align:center;" bgcolor="#155d84" width="30%" >
       <p>
@@ -31,24 +34,24 @@ window.max = 2000;
 </p>
     </td>
     <td bgcolor="#155d84" width="5%" style="text-align:right; vertical-align:top; padding-top:0; color:white "> 
-  <%= @max %>
+  <%= @max_loan %>
   </td>
   <td bgcolor="#155d84" width="5%" style="text-align:left; vertical-align:top; padding-top:0; color:white ">
-  <%= @min %>
+  <%= @min_tenure %>
   </td>
     <td style="text-align:center;" bgcolor="#155d84" width="30%"> 
         <p>
   <input type="text" id="amount_" readonly style="border:0; color:#155d84; font-weight:bold;  font-size:20px; padding:20px; padding-left:150px;" >
   </td>
     <td bgcolor="#155d84" width="5%" style="text-align:right; vertical-align:top; padding-top:0; color:white "> 
-  <%= @max %>
+  <%= @max_tenure %>
   </td>
-</p>
+</p> 
     </td>
   </tr>
 </table>
 
-
+<%= hidden_field_tag :task_id, @display_details%>
 
 
 <table cellpadding="10">
@@ -58,38 +61,50 @@ window.max = 2000;
     <th>Charges</th>
     <th>Emi</th>
   </tr>
-  <% @bank_details.each do |bank_detail| %>
+
+<% details = '<%= javascript_tag  do %> $("#task_id").val(); <% end %>' %>
+  
+  <% details.each do |display_detail| %>
    <tr>
-      <td><%= bank_detail['bank_name'] %></td>
-      <td><%= bank_detail['base_rate'].round(2)%></td>
-      <td><%= bank_detail['processing_amount'] %></td>
-      <td><%= bank_detail['processing_type'] %></td>
+      <td>
+     <%= image_tag "data:image/jpeg;base64,#{display_detail['bank_logo']}" %>
+  </td>
+      <td><%= display_detail["interest_rate"].round(2)%></td>
+      <td><%= display_detail["processing_amount"] %></td>
+      <td><%= display_detail["emi"].round(2) %></td>
     </tr>
     <% end %>
   </table>
-
-
-<%= send_data Base64.decode64(@bank_logo), :type => 'image/jpeg', :disposition => 'inline' %>
-
-
-
-
-
-
+  
  
  <script>
   $(function() {
   
     $( "#slider-range-max" ).slider({
       range: "min",
-      min: 1,
-      max: window.max,
-      value: 500,
+      min: window.min_loan,
+      max: window.max_loan,
+      value: (window.min_loan + window.max_loan )/2,
       slide: function( event, ui ) {
         $( "#amount" ).val( ui.value );
       }
+
     });
     $( "#amount" ).val( $( "#slider-range-max" ).slider( "value" ) );
+    $("#slider-range-max").on("slidestop", function(event, ui) {
+        alert("Im done");
+        var data = {"loan_amount": ui.value} 
+        $.ajax({
+          type: 'POST',
+          url: 'show.json',
+          data: data,
+          dataType: "json",
+          success: function(data) {
+              $("#task_id").val()
+          }
+
+        });
+    });
   });
   </script>
 
@@ -102,9 +117,9 @@ window.max = 2000;
   
     $( "#slider-range-max-min" ).slider({
       range: "min",
-      min: 1,
-      max: window.max,
-      value: 500,
+      min: window.min_tenure,
+      max: window.max_tenure,
+      value: (window.min_tenure + window.max_tenure )/2,
       slide: function( event, ui ) {
         $( "#amount_" ).val( ui.value );
       }
