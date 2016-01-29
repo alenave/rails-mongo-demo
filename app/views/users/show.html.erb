@@ -1,0 +1,114 @@
+
+
+<%= javascript_tag do %>
+window.max = 2000;
+<% end %>
+
+<table width="90%" cellpadding="50" bgcolor="155d84">
+  <tr>
+    <th colspan="3" style="color:white; font-size:18px; padding-bottom:1px;">Select Loan Amount</th>
+    <th colspan="3" style="color:white; font-size:18px; padding-bottom:1px;">Select Tenure</th>
+  </tr>
+  <tr>
+  
+  <td width="35%" style="
+    padding-bottom: 1px;" bgcolor="#155d84" colspan="3">
+    <div id="slider-range-max"></div>
+    </td>
+    
+    <td width="35%" style="
+    padding-bottom: 1px;" bgcolor="#155d84" colspan="3">
+    <div id="slider-range-max-min"></div>
+    </td>
+  </tr>
+  <tr>
+  <td bgcolor="#155d84" width="5%" style="text-align:left; vertical-align:top; padding-top:0; color:white ">
+  <%= @min %>
+  </td>
+    <td style="text-align:center;" bgcolor="#155d84" width="30%" >
+      <p>
+  <input type="text" id="amount" readonly style="border:0; color:#155d84; font-weight:bold;  font-size:20px; padding:20px; padding-left:150px;">
+</p>
+    </td>
+    <td bgcolor="#155d84" width="5%" style="text-align:right; vertical-align:top; padding-top:0; color:white "> 
+  <%= @max %>
+  </td>
+  <td bgcolor="#155d84" width="5%" style="text-align:left; vertical-align:top; padding-top:0; color:white ">
+  <%= @min %>
+  </td>
+    <td style="text-align:center;" bgcolor="#155d84" width="30%"> 
+        <p>
+  <input type="text" id="amount_" readonly style="border:0; color:#155d84; font-weight:bold;  font-size:20px; padding:20px; padding-left:150px;" >
+  </td>
+    <td bgcolor="#155d84" width="5%" style="text-align:right; vertical-align:top; padding-top:0; color:white "> 
+  <%= @max %>
+  </td>
+</p>
+    </td>
+  </tr>
+</table>
+
+
+
+
+<table cellpadding="10">
+  <tr>
+    <th>Bank</th>
+    <th>Interest Rate</th>
+    <th>Charges</th>
+    <th>Emi</th>
+  </tr>
+  <% @bank_details.each do |bank_detail| %>
+   <tr>
+      <td><%= bank_detail['bank_name'] %></td>
+      <td><%= bank_detail['base_rate'].round(2)%></td>
+      <td><%= bank_detail['processing_amount'] %></td>
+      <td><%= bank_detail['processing_type'] %></td>
+    </tr>
+    <% end %>
+  </table>
+
+
+<%= send_data Base64.decode64(@bank_logo), :type => 'image/jpeg', :disposition => 'inline' %>
+
+
+
+
+
+
+ 
+ <script>
+  $(function() {
+  
+    $( "#slider-range-max" ).slider({
+      range: "min",
+      min: 1,
+      max: window.max,
+      value: 500,
+      slide: function( event, ui ) {
+        $( "#amount" ).val( ui.value );
+      }
+    });
+    $( "#amount" ).val( $( "#slider-range-max" ).slider( "value" ) );
+  });
+  </script>
+
+
+
+<div id="slider-range-max-min"></div>
+ 
+ <script>
+  $(function() {
+  
+    $( "#slider-range-max-min" ).slider({
+      range: "min",
+      min: 1,
+      max: window.max,
+      value: 500,
+      slide: function( event, ui ) {
+        $( "#amount_" ).val( ui.value );
+      }
+    });
+    $( "#amount_" ).val( $( "#slider-range-max-min" ).slider( "value" ) );
+  });
+  </script>

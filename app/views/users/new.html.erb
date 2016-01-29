@@ -1,0 +1,62 @@
+<%= form_for :user_detail, url: users_path do  |f| %>
+ 
+  <% if @user_detail.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+        <%= pluralize(@user_detail.errors.count, "error") %> prohibited
+        this loan details from being saved:
+      </h2>
+      <ul>
+        <% @user_detail.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+ 
+  <p>
+    <%= f.label :Name %><br>
+    <%= f.text_field :user_name %>
+  </p>
+ 
+  <p>
+    <%= f.label :Email_Id %><br>
+    <%= f.text_field :email_id %>
+  </p>
+
+  <p>
+    <%= f.label :Mobile_Number %><br>
+    <%= f.text_field :mobile_number %>
+  </p>
+
+<h3>Extra Payments</h3>
+
+  <p>
+    <%= f.label :Loan_Amount %><br>
+    <%= f.text_field :loan_amount %>
+  </p>
+
+  <p>
+    <%= f.label :Tenure %><br>
+    <%= f.text_field :tenure %>
+  </p>
+
+  <p>
+  <%= f.hidden_field :tenure %>
+  </p>
+
+
+  <p>
+    <%= f.submit %>
+  </p>
+  
+<% end %>
+
+
+
+
+
+
+
+
+
