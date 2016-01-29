@@ -1,5 +1,3 @@
-
-
 ### What is this repository for? ###
 
 * To show all banks which are all giving the loan on specified loan amount and tenure
@@ -35,32 +33,9 @@ rails s
 ```
 
 ### Running the Emi Calculator: ###
-
-
+Open
 ```
 #!code
-
-Open localhost:3000 in your browser.
+localhost:3000 
 ```
-
-
-
-### How do I get set up? ###
-
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
-
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
+in your browser.
