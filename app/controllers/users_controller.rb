@@ -1,6 +1,10 @@
 require 'amortization.rb'
 class UsersController < ApplicationController
 
+  def index
+    @user_details = User.all
+  end
+
   def new
     @user_detail = User.new
   end
@@ -24,6 +28,26 @@ class UsersController < ApplicationController
     else
       render 'new'
     end
+  end
+
+  def edit
+    @user_detail = User.find(params[:id])
+  end
+
+  def update
+    @user_detail = User.find(params[:id])
+   
+    if @user_detail.update(user_detail_params)
+      redirect_to @user_detail
+    else
+      render 'edit'
+    end
+  end
+
+  def destroy
+    @user_detail = User.find(params[:id])
+    @user_detail.destroy
+    redirect_to users_path
   end
 
 

@@ -1,0 +1,28 @@
+<h1>List of previoues inputs</h1>
+ <%= link_to 'New Calculation', new_user_path %>
+ <br>
+<table>
+  <tr>
+    <th style="padding-left: 10px">Name</th>
+    <th style="padding-left: 10px">Email</th>
+    <th style="padding-left: 10px">Mobile Number</th>
+    <th style="padding-left: 10px">Loan amount</th>
+    <th style="padding-left: 10px">Tenure</th>
+  </tr>
+ 
+  <% @user_details.each do |user_detail| %>
+   
+    <tr>
+      <td style="padding-left: 10px"><%= user_detail.user_name %></td>
+      <td style="padding-left: 10px"><%= user_detail.email_id %></td>
+      <td style="padding-left: 30px"><%= user_detail.mobile_number %></td>
+      <td style="padding-left: 30px"><%= user_detail.loan_amount %></td>
+      <td style="padding-left: 10px"><%= user_detail.tenure %></td>
+      <td style="padding-left: 30px"><%= link_to 'Show', user_path(user_detail) %></td>
+      <td style="padding-left: 10px"><%= link_to 'Edit', edit_user_path(user_detail) %></td>
+      <td style="padding-left: 10px"><%= link_to 'Destroy', user_path(user_detail),
+              method: :delete,
+              data: { confirm: 'Are you sure?' } %></td>
+    </tr>
+  <% end %>
+</table>

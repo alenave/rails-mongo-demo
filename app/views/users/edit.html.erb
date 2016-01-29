@@ -1,4 +1,5 @@
-<%= form_for :user_detail, url: users_path do  |f| %>
+<%= link_to 'Back', users_path %>
+<%= form_for :user_detail, url: user_path(@user_detail), method: :patch  do  |f| %>
  
   <% if @user_detail.errors.any? %>
     <div id="error_explanation">
@@ -46,12 +47,3 @@
   </p>
   
 <% end %>
-
-
-
-
-
-
-
-
-
