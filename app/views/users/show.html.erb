@@ -5,6 +5,8 @@ window.max_loan = <%= @max_loan %>;
 window.min_loan = <%= @min_loan %>;
 window.max_tenure = <%= @max_tenure %>;
 window.min_tenure = <%= @min_tenure %>;
+window.show_loan_amount = <%= @user_detail.loan_amount %>
+window.show_tenure = <%= @user_detail.tenure %>
 <% end %>
 
 <table width="90%" cellpadding="50" bgcolor="155d84">
@@ -54,6 +56,7 @@ window.min_tenure = <%= @min_tenure %>;
 <%= hidden_field_tag :task_id, @display_details%>
 
 
+<div id="table_for_bank"> 
 <table cellpadding="10">
   <tr>
     <th>Bank</th>
@@ -62,9 +65,8 @@ window.min_tenure = <%= @min_tenure %>;
     <th>Emi</th>
   </tr>
 
-<% details = '<%= javascript_tag  do %> $("#task_id").val(); <% end %>' %>
   
-  <% details.each do |display_detail| %>
+  <% @display_details.each do |display_detail| %>
    <tr>
       <td>
      <%= image_tag "data:image/jpeg;base64,#{display_detail['bank_logo']}" %>
@@ -75,7 +77,7 @@ window.min_tenure = <%= @min_tenure %>;
     </tr>
     <% end %>
   </table>
-  
+  </div>
  
  <script>
   $(function() {
@@ -84,23 +86,45 @@ window.min_tenure = <%= @min_tenure %>;
       range: "min",
       min: window.min_loan,
       max: window.max_loan,
-      value: (window.min_loan + window.max_loan )/2,
+      value: window.show_loan_amount,
       slide: function( event, ui ) {
         $( "#amount" ).val( ui.value );
       }
-
     });
+
     $( "#amount" ).val( $( "#slider-range-max" ).slider( "value" ) );
+
     $("#slider-range-max").on("slidestop", function(event, ui) {
-        alert("Im done");
-        var data = {"loan_amount": ui.value} 
+        var tenure = $("#amount_").val();
+        var data = {"loan_amount": ui.value, "tenure":tenure} 
         $.ajax({
           type: 'POST',
-          url: 'show.json',
+          url: 'calculation.json',
           data: data,
           dataType: "json",
           success: function(data) {
-              $("#task_id").val()
+              var innerHTMLString = '<table cellpadding="10" style="border-spacing: 10px 0;"><tr><th>Bank</th><th>Interest Rate</th><th>Charges</th><th>Emi</th></tr>'
+              for(var i=0;i<data.length;i++){
+                 var obj = data[i];
+                 innerHTMLString += '<tr>'
+                 for(var key in obj){
+                   if (key == "bank_logo") {
+                      innerHTMLString = innerHTMLString + '<td> <img src="data:image/jpeg;base64,' + obj[key] + '"</td>';
+                   }
+                   if (key == "interest_rate") {
+                      innerHTMLString = innerHTMLString + '<td>' + obj[key] + '</td>';
+                   }
+                   if (key == "processing_amount") {
+                      innerHTMLString = innerHTMLString + '<td>' + obj[key] + '</td>';
+                   }
+                   if (key == "emi") {
+                      innerHTMLString = innerHTMLString + '<td>' +  Math.round(obj[key] * 100) / 100 + '</td></tr>';
+                   }
+                }
+              }
+              innerHTMLString += '</table>'
+            
+              $("#table_for_bank").html(innerHTMLString);
           }
 
         });
@@ -119,11 +143,49 @@ window.min_tenure = <%= @min_tenure %>;
       range: "min",
       min: window.min_tenure,
       max: window.max_tenure,
-      value: (window.min_tenure + window.max_tenure )/2,
+      value: window.show_tenure,
       slide: function( event, ui ) {
         $( "#amount_" ).val( ui.value );
       }
     });
     $( "#amount_" ).val( $( "#slider-range-max-min" ).slider( "value" ) );
+
+        $("#slider-range-max-min").on("slidestop", function(event, ui) {
+        var loan_amount = $("#amount").val();
+        var data = {"tenure": ui.value, "loan_amount": loan_amount} 
+        console.log(data);
+        $.ajax({
+          type: 'POST',
+          url: 'calculation.json',
+          data: data,
+          dataType: "json",
+          success: function(data) {
+              var innerHTMLString = '<table cellpadding="10" style="border-spacing: 10px 0;"><tr><th>Bank</th><th>Interest Rate</th><th>Charges</th><th>Emi</th></tr>'
+              for(var i=0;i<data.length;i++){
+                 var obj = data[i];
+                 innerHTMLString += '<tr>'
+                 for(var key in obj){
+                   if (key == "bank_logo") {
+                      innerHTMLString = innerHTMLString + '<td> <img src="data:image/jpeg;base64,' + obj[key] + '"</td>';
+                   }
+                   if (key == "interest_rate") {
+                      innerHTMLString = innerHTMLString + '<td>' + obj[key] + '</td>';
+                   }
+                   if (key == "processing_amount") {
+                      innerHTMLString = innerHTMLString + '<td>' + obj[key] + '</td>';
+                   }
+                   if (key == "emi") {
+                      innerHTMLString = innerHTMLString + '<td>' +  Math.round(obj[key] * 100) / 100 + '</td></tr>';
+                   }
+                }
+              }
+              innerHTMLString += '</table>'
+            
+              $("#table_for_bank").html(innerHTMLString);
+          }
+
+        });
+    });
+
   });
   </script>
