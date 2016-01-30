@@ -13,8 +13,8 @@ class UsersController < ApplicationController
     loan_amount = @user_detail.loan_amount
     tenure = @user_detail.tenure
     @min_loan = (@user_detail.loan_amount / 2).to_i
-    @max_loan = (@user_detail.loan_amount * 2).to_i
-    @min_tenure= (@user_detail.tenure / 2).to_i
+    @max_loan = (@user_detail.loan_amount * 4).to_i
+    @min_tenure= 1
     @max_tenure = (@user_detail.tenure * 2).to_i
     @display_details = calculation(loan_amount, tenure) 
   end

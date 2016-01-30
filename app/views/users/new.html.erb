@@ -1,3 +1,5 @@
+<h1>Enter new user details</h1>
+<br>
 <%= form_for :user_detail, url: users_path do  |f| %>
  
   <% if @user_detail.errors.any? %>
@@ -42,8 +44,10 @@
   </p>
 
   <p>
-    <%= f.submit "Proceed"%>
+    <%= f.submit "Proceed", :class => 'submit-btn'%>
+    <%= link_to 'Home', users_path %>
   </p>
+
   
 <% end %>
 

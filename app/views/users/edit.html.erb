@@ -1,4 +1,6 @@
-<%= link_to 'Back', users_path %>
+<h1>Edit user details</h1>
+<br>
+
 <%= form_for :user_detail, url: user_path(@user_detail), method: :patch  do  |f| %>
  
   <% if @user_detail.errors.any? %>
@@ -43,7 +45,8 @@
   </p>
 
   <p>
-    <%= f.submit "Proceed"%>
+    <%= f.submit "Proceed", :class => 'submit-btn'%>
+    <%= link_to 'Home', users_path %>
   </p>
   
 <% end %>
